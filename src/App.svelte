@@ -1,5 +1,35 @@
 <script>
-	let name = 'world';
+  import { Router, Route } from 'svelte-navigator';
+  import routes from './routes';
+  import { spinner } from './store';
+  import Events from './pages/Events.svelte';
+  import CreateEvent from './pages/CreateEvent.svelte';
 </script>
 
-<h1>Hello {name}!</h1>
+{#if $spinner}
+  <div class="spinner-container">
+    <div class="spinner spinner-border" />
+  </div>
+{/if}
+<Router>
+  <Route path={routes.EVENTS} component={Events} />
+  <Route path={routes.CREATE_EVENT} component={CreateEvent} />
+  <Route path="*" component={Events} />
+</Router>
+
+<style>
+  .spinner-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+  }
+
+  .spinner {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+</style>
