@@ -48,7 +48,7 @@
   };
 </script>
 
-<h1>Create event</h1>
+<h1 class="text-center">Create event</h1>
 <form>
   <div class="form-group mb-3">
     <label for="name">Name</label>

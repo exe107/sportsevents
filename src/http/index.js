@@ -11,10 +11,10 @@ const call = (endpoint, method, body) => {
   }
 
   const request = new Request(`http://localhost:8000${endpoint}`, init);
-  spinner.set(true);
+  spinner.update((state) => state + 1);
 
   return fetch(request).then((response) => {
-    spinner.set(false);
+    spinner.update((state) => state - 1);
 
     return response.json();
   });

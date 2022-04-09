@@ -3,17 +3,19 @@
   import routes from './routes';
   import { spinner } from './store';
   import Events from './pages/Events.svelte';
+  import Event from './pages/Event.svelte';
   import CreateEvent from './pages/CreateEvent.svelte';
 </script>
 
-{#if $spinner}
+{#if $spinner > 0}
   <div class="spinner-container">
     <div class="spinner spinner-border" />
   </div>
 {/if}
-<Router>
+<Router basepath="/">
   <Route path={routes.EVENTS} component={Events} />
-  <Route path={routes.CREATE_EVENT} component={CreateEvent} />
+  <Route path={routes.EVENT} component={Event} />
+  <Route path={routes.NEW_EVENT} component={CreateEvent} />
   <Route path="*" component={Events} />
 </Router>
 

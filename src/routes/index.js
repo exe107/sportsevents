@@ -1,4 +1,5 @@
 export default {
-  EVENTS: '/events',
-  CREATE_EVENT: '/create-event',
+  EVENTS: 'events',
+  EVENT: 'events/:id',
+  NEW_EVENT: 'new-event',
 };
