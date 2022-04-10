@@ -1,6 +1,7 @@
 <script>
   import { onDestroy } from 'svelte';
   import { useParams, useNavigate } from 'svelte-navigator';
+  import XLg from 'svelte-bootstrap-icons/lib/XLg';
   import { events, sports } from '../store';
   import { call, Method } from '../http';
   import routes from '../routes';
@@ -37,9 +38,15 @@
     newPlayers = [...newPlayers, ''];
   };
 
-  const removePlayer = (playerIndex) => () => {
+  const removeNewPlayer = (playerIndex) => () => {
     newPlayers = newPlayers.filter((player, index) => playerIndex !== index);
     validationState.players = validationState.players.filter((player, index) => playerIndex !== index);
+  };
+
+  const removeExistingPlayer = (playerId) => () => {
+    call(`/events/${eventId}/players/${playerId}`, Method.DELETE).then((response) => {
+      $events = $events.map((event) => (event.id === eventId ? response : event));
+    });
   };
 
   const saveEvent = () => {
@@ -87,14 +94,23 @@
     <h6>Players:</h6>
   {/if}
   <ul>
-    {#each event.players as { name }}
-      <li>{name}</li>
+    {#each event.players as { id, name }}
+      <li>
+        <div class="d-flex">
+          <h2>
+            {name}
+          </h2>
+          <button class="btn btn-outline-danger border-0 p-0 ms-3" on:click={removeExistingPlayer(id)}>
+            <XLg width={30} height={30} />
+          </button>
+        </div>
+      </li>
     {/each}
   </ul>
   {#each newPlayers as player, index}
     <div class="d-flex align-items-baseline">
       <input class="form-control mb-3 me-3" placeholder="Player name" bind:value={player} />
-      <button class="btn btn-danger text-white" on:click={removePlayer(index)}>Remove</button>
+      <button class="btn btn-danger text-white" on:click={removeNewPlayer(index)}>Remove</button>
     </div>
     <FieldError message={validationState.players[index]} />
   {/each}

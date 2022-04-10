@@ -32,7 +32,7 @@
   {#if $events.length > 0}
     <h1 class="text-center">Current events</h1>
     <label for="sport">Sport</label>
-    <select class="form-control" name="sport" id="sport" bind:value={sport}>
+    <select class="form-control mb-3" name="sport" id="sport" bind:value={sport}>
       <option value={ALL_SPORTS_KEY}>All</option>
       {#each $sports as { title, id }}
         <option value={id}>{title}</option>
