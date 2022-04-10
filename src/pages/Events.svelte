@@ -20,6 +20,12 @@
 
   let filteredEvents;
   $: filteredEvents = sport === ALL_SPORTS_KEY ? $events : $events.filter((event) => event.sport_id === sport);
+
+  const getSportParticipants = (id) => {
+    const matchedSport = $sports.find((sport) => sport.id === id);
+
+    return matchedSport.participants_number;
+  };
 </script>
 
 {#if fetchingFinished}
@@ -33,11 +39,12 @@
       {/each}
     </select>
     <ul>
-      {#each filteredEvents as { id, title }}
+      {#each filteredEvents as { id, title, players, sport_id }}
         <li>
           <Link to={`events/${id}`}>
             {title}
           </Link>
+          <div>Slots: ({players.length} / {getSportParticipants(sport_id)})</div>
         </li>
       {/each}
     </ul>

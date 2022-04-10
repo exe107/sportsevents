@@ -653,6 +653,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svelte-bootstrap-icons@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/svelte-bootstrap-icons/-/svelte-bootstrap-icons-1.8.1.tgz#c31e85bda1b34d8324fbeeb4baddbc6da03e837f"
+  integrity sha512-QgQbkcIbUNRv3MAK/vdCBbHclnEUf8w+4lzHVTp87usKaFSlkUXJ6hox17FcstMsyUsclctiCRRvC4JXJS2WGw==
+
 svelte-navigator@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/svelte-navigator/-/svelte-navigator-3.1.5.tgz#f79d78b2c2c5ad907d8b1d3748d3fbe12c32195c"
