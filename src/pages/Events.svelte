@@ -4,6 +4,7 @@
   import routes from '../routes';
   import { call, Method } from '../http';
   import { events, sports } from '../store';
+  import { SPORT_ICON } from '../util';
 
   let fetchingFinished = false;
 
@@ -29,27 +30,28 @@
 </script>
 
 {#if fetchingFinished}
-  {#if $events.length > 0}
-    <h1 class="text-center">Current events</h1>
-    <label for="sport">Sport</label>
-    <select class="form-control mb-3" name="sport" id="sport" bind:value={sport}>
-      <option value={ALL_SPORTS_KEY}>All</option>
-      {#each $sports as { title, id }}
-        <option value={id}>{title}</option>
-      {/each}
-    </select>
-    <ul>
+  <div class="w-75 mx-auto">
+    {#if $events.length > 0}
+      <h1 class="text-center">Current events</h1>
+      <label for="sport">Sport</label>
+      <select class="form-control mb-3" name="sport" id="sport" bind:value={sport}>
+        <option value={ALL_SPORTS_KEY}>All</option>
+        {#each $sports as { title, id }}
+          <option value={id}>{title}</option>
+        {/each}
+      </select>
       {#each filteredEvents as { id, title, players, sport_id }}
-        <li>
+        <div class="mb-3">
+          <img src={SPORT_ICON[sport_id]} height="30" />
           <Link to={`events/${id}`}>
             {title}
           </Link>
           <div>Slots: ({players.length} / {getSportParticipants(sport_id)})</div>
-        </li>
+        </div>
       {/each}
-    </ul>
-  {:else}
-    <h1 class="text-center">No events at the moment</h1>
-  {/if}
-  <Link to={routes.NEW_EVENT}>Create event</Link>
+    {:else}
+      <h1 class="text-center">No events at the moment</h1>
+    {/if}
+    <Link to={routes.NEW_EVENT}>Create event</Link>
+  </div>
 {/if}

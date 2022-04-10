@@ -49,7 +49,7 @@
 </script>
 
 <h1 class="text-center">Create event</h1>
-<form>
+<form class="w-75 mx-auto">
   <div class="form-group mb-3">
     <label for="name">Name</label>
     <input class="form-control" name="name" id="name" bind:value={name} />
