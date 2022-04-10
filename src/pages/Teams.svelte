@@ -6,9 +6,11 @@
   export let eventId;
   export let players;
 
-  let playerId;
+  let selectedPlayerId;
   let team1Players, team2Players;
   let selectPlayer, onSameTeam;
+
+  let playerEditState = {};
 
   $: {
     const filterTeamPlayers = (team) => players.filter((player) => player.team_nr === team);
@@ -16,15 +18,15 @@
     team2Players = filterTeamPlayers(2);
 
     selectPlayer = (id) => () => {
-      if (playerId) {
-        call(`/events/${eventId}/swap`, Method.POST, { player_one_id: playerId, player_two_id: id }).then(
+      if (selectedPlayerId) {
+        call(`/events/${eventId}/swap`, Method.POST, { player_one_id: selectedPlayerId, player_two_id: id }).then(
           (response) => {
-            playerId = null;
+            selectedPlayerId = null;
             $events = $events.map((event) => (event.id === eventId ? response : event));
           },
         );
       } else {
-        playerId = id;
+        selectedPlayerId = id;
       }
     };
 
@@ -35,6 +37,23 @@
       return player1.team_nr === player2.team_nr;
     };
   }
+
+  const editPlayer = (id, name) => () => {
+    playerEditState = { ...playerEditState, [id]: name };
+  };
+
+  const handleKeyPress =
+    (id) =>
+    ({ key }) => {
+      if (key === 'Escape') {
+        playerEditState = { ...playerEditState, [id]: undefined };
+      } else if (key === 'Enter') {
+        call(`/events/${eventId}/players/${id}`, Method.PATCH, { name: playerEditState[id] }).then((response) => {
+          $events = $events.map((event) => (event.id === eventId ? response : event));
+          playerEditState = { ...playerEditState, [id]: undefined };
+        });
+      }
+    };
 </script>
 
 <div class="d-flex">
@@ -42,11 +61,19 @@
     <h1>Team 1</h1>
     {#each team1Players as { id, name }}
       <div class="d-flex justify-content-between">
+        {#if typeof playerEditState[id] === 'string'}
+          <input class="form-control" bind:value={playerEditState[id]} on:keyup={handleKeyPress(id)} />
+        {:else}
+          <h2 on:click={editPlayer(id, name)}>
+            {name}
+          </h2>
+        {/if}
         <h2>
-          {name}
-        </h2>
-        <h2>
-          <button class="btn btn-outline-secondary border-0 p-0" disabled={!!playerId && onSameTeam(playerId, id)}>
+          <button
+            class="btn btn-outline-secondary border-0 p-0"
+            disabled={(!!selectedPlayerId && onSameTeam(selectedPlayerId, id)) ||
+              typeof playerEditState[id] === 'string'}
+          >
             <ArrowLeftRight width={30} height={30} on:click={selectPlayer(id)} />
           </button>
         </h2>
@@ -58,11 +85,19 @@
     <h1>Team 2</h1>
     {#each team2Players as { id, name }}
       <div class="d-flex justify-content-between">
+        {#if typeof playerEditState[id] === 'string'}
+          <input class="form-control" bind:value={playerEditState[id]} on:keyup={handleKeyPress(id)} />
+        {:else}
+          <h2 on:click={editPlayer(id, name)}>
+            {name}
+          </h2>
+        {/if}
         <h2>
-          {name}
-        </h2>
-        <h2>
-          <button class="btn btn-outline-secondary border-0 p-0" disabled={!!playerId && onSameTeam(playerId, id)}>
+          <button
+            class="btn btn-outline-secondary border-0 p-0"
+            disabled={(!!selectedPlayerId && onSameTeam(selectedPlayerId, id)) ||
+              typeof playerEditState[id] === 'string'}
+          >
             <ArrowLeftRight width={30} height={30} on:click={selectPlayer(id)} />
           </button>
         </h2>
